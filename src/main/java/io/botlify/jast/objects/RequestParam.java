@@ -1,4 +1,4 @@
-package fr.botlify.jast.objects;
+package io.botlify.jast.objects;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

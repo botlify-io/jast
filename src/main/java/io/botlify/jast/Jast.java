@@ -1,11 +1,11 @@
-package fr.botlify.jast;
+package io.botlify.jast;
 
 import com.sun.net.httpserver.HttpServer;
-import fr.botlify.jast.config.RouteConfig;
-import fr.botlify.jast.enums.HttpMethod;
-import fr.botlify.jast.interfaces.Middleware;
-import fr.botlify.jast.interfaces.Route;
-import fr.botlify.jast.tools.SetupRoutesTool;
+import io.botlify.jast.config.RouteConfig;
+import io.botlify.jast.enums.HttpMethod;
+import io.botlify.jast.interfaces.Middleware;
+import io.botlify.jast.interfaces.Route;
+import io.botlify.jast.tools.SetupRoutesTool;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;

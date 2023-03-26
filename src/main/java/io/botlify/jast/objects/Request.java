@@ -1,11 +1,14 @@
-package fr.botlify.jast.objects;
+package io.botlify.jast.objects;
 
 import com.sun.net.httpserver.HttpExchange;
-import fr.botlify.jast.config.RouteConfig;
-import fr.botlify.jast.enums.HttpMethod;
+import io.botlify.jast.config.RouteConfig;
+import io.botlify.jast.enums.HttpMethod;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +22,18 @@ public class Request {
     @NotNull
     private final RouteConfig routeConfig;
 
+    @Getter
+    private final byte[] rawBody;
+
     public Request(@NotNull final RouteConfig routeConfig,
-                   @NotNull final HttpExchange exchange) {
+                   @NotNull final HttpExchange exchange) throws IOException {
         this.routeConfig = routeConfig;
         this.exchange = exchange;
+        if (getMethod().hasBody()) {
+            this.rawBody = exchange.getRequestBody().readAllBytes();
+            return;
+        }
+        this.rawBody = null;
     }
 
     /**
@@ -39,9 +50,11 @@ public class Request {
      * @throws IllegalStateException If the request method does not have a body.
      */
     public @NotNull String getBody() {
-        if (!getMethod().hasBody())
-            throw (new IllegalStateException("The request method does not have a body."));
-        return (exchange.getRequestBody().toString());
+        return (new String(getRawBody()));
+    }
+
+    public @NotNull JSONObject getBodyAsJson() {
+        return (new JSONObject(getBody()));
     }
 
     /**
@@ -131,19 +144,17 @@ public class Request {
 
     public @Nullable String getRequestParam(@NotNull final String param) {
         final Map<String, Integer> requestParams = routeConfig.getRequestParam();
-        System.out.println("requestParams" + requestParams);
         if (!requestParams.containsKey(param))
             return (null);
         final int index = requestParams.get(param);
         final String[] pathSplit = exchange.getRequestURI().getPath().split("/");
-        System.out.println("exchange.getRequestURI().getPath(): " +  exchange.getRequestURI().getPath());
-        System.out.println("pathSplit: ");
-        for (String s : pathSplit) {
-            System.out.println("\t" + s);
-        }
         if (pathSplit.length <= index)
             return (null);
         return (pathSplit[index]);
     }
+
+    /*
+     $      Cookies
+     */
 
 }

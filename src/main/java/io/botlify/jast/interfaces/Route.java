@@ -1,7 +1,7 @@
-package fr.botlify.jast.interfaces;
+package io.botlify.jast.interfaces;
 
-import fr.botlify.jast.objects.Request;
-import fr.botlify.jast.objects.Response;
+import io.botlify.jast.objects.Request;
+import io.botlify.jast.objects.Response;
 import org.jetbrains.annotations.NotNull;
 
 public interface Route {

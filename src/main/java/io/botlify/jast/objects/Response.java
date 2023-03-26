@@ -1,4 +1,4 @@
-package fr.botlify.jast.objects;
+package io.botlify.jast.objects;
 
 import com.sun.net.httpserver.HttpExchange;
 import org.jetbrains.annotations.NotNull;

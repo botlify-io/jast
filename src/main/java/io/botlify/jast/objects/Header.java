@@ -1,4 +1,4 @@
-package fr.botlify.jast.objects;
+package io.botlify.jast.objects;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;

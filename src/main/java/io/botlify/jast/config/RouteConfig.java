@@ -1,8 +1,8 @@
-package fr.botlify.jast.config;
+package io.botlify.jast.config;
 
-import fr.botlify.jast.enums.HttpMethod;
-import fr.botlify.jast.interfaces.Middleware;
-import fr.botlify.jast.interfaces.Route;
+import io.botlify.jast.enums.HttpMethod;
+import io.botlify.jast.interfaces.Middleware;
+import io.botlify.jast.interfaces.Route;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

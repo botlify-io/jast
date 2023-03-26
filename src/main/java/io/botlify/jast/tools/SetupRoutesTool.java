@@ -1,11 +1,11 @@
-package fr.botlify.jast.tools;
+package io.botlify.jast.tools;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import fr.botlify.jast.objects.Request;
-import fr.botlify.jast.objects.Response;
-import fr.botlify.jast.config.RouteConfig;
-import fr.botlify.jast.interfaces.Middleware;
+import io.botlify.jast.objects.Request;
+import io.botlify.jast.objects.Response;
+import io.botlify.jast.config.RouteConfig;
+import io.botlify.jast.interfaces.Middleware;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -41,12 +41,17 @@ public class SetupRoutesTool {
         if (routeConfig == null)
             return;
         final Response response = new Response(exchange);
-        final Request request = new Request(routeConfig, exchange);
-        // Call the middlewares before all the routes.
-        if (!callMiddleware(request, response, routeConfig.getMiddlewares()))
-            return;
-        // Call the route.
-        routeConfig.getRoute().handle(request, new Response(exchange));
+        try {
+            final Request request = new Request(routeConfig, exchange);
+            // Call the middlewares before all the routes.
+            if (!callMiddleware(request, response, routeConfig.getMiddlewares()))
+                return;
+            // Call the route.
+            routeConfig.getRoute().handle(request, new Response(exchange));
+        } catch (Exception e) {
+            // TODO: Handle the exception.
+        }
+
     }
 
     private boolean callMiddleware(@NotNull final Request request,

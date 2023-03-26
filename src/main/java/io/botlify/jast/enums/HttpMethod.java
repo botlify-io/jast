@@ -1,7 +1,5 @@
-package fr.botlify.jast.enums;
+package io.botlify.jast.enums;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
 
 /**
