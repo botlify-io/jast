@@ -1,6 +1,7 @@
-package fr.waimea.jast;
+package fr.botlify.jast.interfaces;
 
-import com.sun.net.httpserver.Request;
+import fr.botlify.jast.objects.Request;
+import fr.botlify.jast.objects.Response;
 import org.jetbrains.annotations.NotNull;
 
 public interface Route {
