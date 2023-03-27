@@ -212,9 +212,9 @@ public final class Jast {
      * @param path The path of the route.
      * @param route The route to insert.
      */
-    private void insertRoute(@NotNull final HttpMethod method,
-                             @NotNull final String path,
-                             @NotNull final Route route) {
+    void insertRoute(@NotNull final HttpMethod method,
+                     @NotNull final String path,
+                     @NotNull final Route route) {
         insertRoute(method, path, new ArrayList<>(0), route);
     }
 

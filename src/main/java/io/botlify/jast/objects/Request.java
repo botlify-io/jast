@@ -29,7 +29,7 @@ public class Request {
                    @NotNull final HttpExchange exchange) throws IOException {
         this.routeConfig = routeConfig;
         this.exchange = exchange;
-        if (getMethod().hasBody()) {
+        if (getMethod().hasRequestBody()) {
             this.rawBody = exchange.getRequestBody().readAllBytes();
             return;
         }

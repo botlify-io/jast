@@ -1,12 +1,12 @@
 package io.botlify.jast.enums;
 
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This enum represents the HTTP methods from the RFC 2616.<br />
  * <a href="https://www.rfc-editor.org/rfc/rfc2616">View the RFC.</a>
  */
-@ToString
 public enum HttpMethod {
 
     GET(false),
@@ -19,13 +19,22 @@ public enum HttpMethod {
     TRACE(false),
     PATCH(true);
 
-    private final boolean body;
+    private final boolean requestBody;
 
     HttpMethod(final boolean hasBody) {
-        this.body = hasBody;
+        this.requestBody = hasBody;
     }
 
-    public boolean hasBody() {
-        return (body);
+    public boolean hasRequestBody() {
+        return (requestBody);
+    }
+
+    public boolean hasResponseBody() {
+        return (this != HEAD);
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return (name());
     }
 }
