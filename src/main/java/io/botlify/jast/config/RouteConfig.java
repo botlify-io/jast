@@ -1,7 +1,6 @@
 package io.botlify.jast.config;
 
 import io.botlify.jast.enums.HttpMethod;
-import io.botlify.jast.interfaces.Middleware;
 import io.botlify.jast.interfaces.Route;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,27 +24,14 @@ public class RouteConfig {
     @Getter @NotNull
     private final String path;
 
-    @Getter @NotNull
-    private final List<Middleware> middlewares;
-
+    @ToString.Exclude
     @Getter @NotNull
     private final Route route;
 
     public RouteConfig(@NotNull final HttpMethod httpMethod,
                        @NotNull final String path,
-                       @NotNull final List<Middleware> middlewares,
                        @NotNull final Route route) {
         this.method = httpMethod;
-        this.middlewares = middlewares;
-        this.path = path;
-        this.route = route;
-    }
-
-    public RouteConfig(@NotNull final HttpMethod httpMethod,
-                       @NotNull final String path,
-                       @NotNull final Route route) {
-        this.method = httpMethod;
-        this.middlewares = new ArrayList<>(0);
         this.path = path;
         this.route = route;
     }
@@ -54,7 +40,7 @@ public class RouteConfig {
      $      Public methods
      */
 
-    public @NotNull final Map<String, Integer> getRequestParam() {
+    public @NotNull Map<String, Integer> getRequestParam() {
         final Map<String, Integer> params = new HashMap<>();
         final String[] split = path.split("/");
         for (int i = 0; i < split.length; i++) {

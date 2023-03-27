@@ -6,6 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Route {
 
-    void handle(@NotNull final Request request, @NotNull final Response response);
+    /**
+     * This method should be redefined by your route.
+     * @param request The request received from the client.
+     * @param response The response object used to send a response to the client.
+     * @return True if the request has been handled, false if the request go to the next route.
+     */
+    boolean handle(@NotNull final Request request, @NotNull final Response response);
 
 }

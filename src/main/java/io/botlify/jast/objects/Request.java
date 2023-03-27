@@ -49,6 +49,14 @@ public class Request {
         return (HttpMethod.valueOf(exchange.getRequestMethod()));
     }
 
+    public @NotNull String getPath() {
+        return (exchange.getRequestURI().getPath());
+    }
+
+    public @NotNull String getHost() {
+        return (exchange.getRequestURI().getHost());
+    }
+
     /**
      * Get the body as a string of the request.
      * @return The body as a string of the request.
@@ -156,25 +164,69 @@ public class Request {
         return (pathSplit[index]);
     }
 
-    /*
-     $      Cookies
+    // Cookies
+
+    /**
+     * This method will parse all the Cookie header and
+     * return a list of all the cookies.
+     * @return A list of all the cookies.
      */
+    public @NotNull List<Cookie> getCookies() {
+        final List<Header> cookiesHeader = getHeaders("Cookie");
+        final List<Cookie> result = new ArrayList<>();
+        for (Header header : cookiesHeader) {
+            List<Cookie> cookies = Cookie.parseCookieHeader(header.getValue());
+            result.addAll(cookies);
+        }
+        return (result);
+    }
 
     // Attributes
 
+    /**
+     * Set an attribute to the request.
+     * @param name The name of the attribute.
+     * @param value The value of the attribute.
+     * @throws NullPointerException If the name or the value given in parameter is null.
+     */
     public void setAttribute(@NotNull final String name,
                              @NotNull final Object value) {
         this.attributes.put(name, value);
     }
 
+    /**
+     * Check if the request has an attribute with the specified name.
+     * @param name The name of the attribute.
+     * @return True if the request has an attribute with the specified name, false otherwise.
+     * @throws NullPointerException If the name given in parameter is null.
+     */
     public boolean hasAttribute(@NotNull final String name) {
         return (this.attributes.containsKey(name));
     }
 
+    /**
+     * Get the attribute with the specified name.
+     * @param name The name of the attribute.
+     * @return The attribute with the specified name.
+     * @throws NullPointerException If the name given in parameter is null.
+     */
     public @Nullable Object getAttribute(@NotNull final String name) {
         if (!hasAttribute(name))
             return (null);
         return (this.attributes.get(name));
+    }
+
+    /**
+     * Remove the attribute with the specified name.
+     * @param name The name of the attribute.
+     * @return True if the attribute has been removed, false otherwise.
+     * @throws NullPointerException If the name given in parameter is null.
+     */
+    public boolean removeAttribute(@NotNull final String name) {
+        if (!hasAttribute(name))
+            return (false);
+        this.attributes.remove(name);
+        return (true);
     }
 
 }

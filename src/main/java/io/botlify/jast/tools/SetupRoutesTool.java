@@ -2,14 +2,20 @@ package io.botlify.jast.tools;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import io.botlify.jast.config.JastConfig;
+import io.botlify.jast.interfaces.Route;
 import io.botlify.jast.objects.Request;
 import io.botlify.jast.objects.Response;
 import io.botlify.jast.config.RouteConfig;
-import io.botlify.jast.interfaces.Middleware;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Log4j2
 public class SetupRoutesTool {
 
     @NotNull
@@ -18,50 +24,68 @@ public class SetupRoutesTool {
     @NotNull
     private final List<RouteConfig> routeConfigs;
 
+    @NotNull
+    private final JastConfig jastConfig;
+
     public SetupRoutesTool(@NotNull final HttpServer server,
-                           @NotNull final List<RouteConfig> routeConfigs) {
+                           @NotNull final List<RouteConfig> routeConfigs,
+                           @NotNull final JastConfig jastConfig) {
         this.server = server;
         this.routeConfigs = routeConfigs;
+        this.jastConfig = jastConfig;
     }
 
     public void setup() {
+        // Log all the routes.
+        routeConfigs.forEach((routeConfig -> {
+            log.debug("Route ({}) \"{}\" has been added.",
+                    routeConfig.getMethod(), routeConfig.getPath());
+        }));
         server.createContext("/", this::callRoute);
     }
 
     private void callRoute(@NotNull final HttpExchange exchange) {
         final String method = exchange.getRequestMethod();
-        final String path = exchange.getRequestURI().getPath();
+        String path = exchange.getRequestURI().getPath();
+        if (!path.endsWith("/") && jastConfig.isEnableTrailingSlash())
+            path = path + "/";
+
+        final String endPath = path;
         // Find the route with the specified path and method.
-        final RouteConfig routeConfig = routeConfigs.stream()
-                .filter(routeConfig1 -> pathEquals(routeConfig1.getPath(), path))
-                .filter(routeConfig1 -> routeConfig1.getMethod().name().equals(method))
-                .findFirst()
-                .orElse(null);
+        final List<RouteConfig> routeConfigList = routeConfigs.stream()
+                .filter(routeConfigTmp -> pathEquals(routeConfigTmp.getPath(), endPath))
+                .filter(routeConfigTmp -> routeConfigTmp.getMethod().name().equals(method))
+                .collect(Collectors.toCollection(ArrayList::new));
         // Check if the route was found.
-        if (routeConfig == null)
-            return;
         final Response response = new Response(exchange);
+        if (routeConfigList.isEmpty()) {
+            log.trace("Route not found: ({}) \"{}\"", method, path);
+            response.sendText(404, "Not found");
+            return;
+        }
+        final RouteConfig routeConfig = routeConfigList.get(0);
         try {
             final Request request = new Request(routeConfig, exchange);
             // Call the middlewares before all the routes.
-            if (!callMiddleware(request, response, routeConfig.getMiddlewares()))
-                return;
-            // Call the route.
-            routeConfig.getRoute().handle(request, new Response(exchange));
+            callRoutes(request, response, routeConfigList);
+        } catch (IOException e) {
+            log.warn("Error while receiving the request: {}", e.getMessage());
         } catch (Exception e) {
-            // TODO: Handle the exception.
+            log.error("Error while calling the route.", e);
+            if (response.isSent())
+                return;
+            response.sendText(500, "Internal server error");
         }
 
     }
 
-    private boolean callMiddleware(@NotNull final Request request,
-                                   @NotNull final Response response,
-                                   @NotNull final List<Middleware> middlewares) {
-        for (final Middleware middleware : middlewares) {
-            if (!middleware.handle(request, response))
-                return (false);
+    private void callRoutes(@NotNull final Request request,
+                            @NotNull final Response response,
+                            @NotNull final List<RouteConfig> routeConfigs) {
+        for (final RouteConfig routeConfig : routeConfigs) {
+            if (!routeConfig.getRoute().handle(request, response))
+                return;
         }
-        return (true);
     }
 
     /**

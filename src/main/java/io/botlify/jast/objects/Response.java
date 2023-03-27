@@ -2,10 +2,12 @@ package io.botlify.jast.objects;
 
 import com.sun.net.httpserver.HttpExchange;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
+@Log4j2
 public class Response {
 
     /**
@@ -120,7 +122,7 @@ public class Response {
             exchange.getResponseBody().write(object.toString().getBytes());
             exchange.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Error while sending response: {}", e.getMessage());
         }
     }
 

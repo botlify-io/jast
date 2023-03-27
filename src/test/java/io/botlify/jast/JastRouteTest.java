@@ -22,6 +22,7 @@ public class JastRouteTest {
             final Jast jast = new Jast();
             jast.insertRoute(httpMethod, "/test", (request, response) -> {
                 response.sendText("Hello World!");
+                return (false);
             });
             jast.listen(port, "0.0.0.0");
             final String requestBody = (httpMethod.hasRequestBody()) ? "Hello World!" : null;
@@ -42,6 +43,7 @@ public class JastRouteTest {
             jast.insertRoute(httpMethod, "/test/:id", (request, response) -> {
                 assertEquals(randomParam, request.getRequestParam("id"));
                 response.sendText("Hello World!");
+                return (false);
             });
             jast.listen(port, "0.0.0.0");
             final String requestBody = (httpMethod.hasRequestBody()) ? "Hello World!" : null;
@@ -67,6 +69,7 @@ public class JastRouteTest {
                 assertEquals(randomParamOne, paramOne);
                 assertEquals(randomParamTwo, paramTwo);
                 response.sendText("Hello World!");
+                return (false);
             });
             jast.listen(port, "0.0.0.0");
             final String requestBody = (httpMethod.hasRequestBody()) ? "Hello World!" : null;
