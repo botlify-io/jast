@@ -22,11 +22,35 @@ public class ContentType {
     public static final ContentType APPLICATION_OCTET_STREAM = new ContentType("application/octet-stream");
     public static final ContentType APPLICATION_XHTML_XML = new ContentType("application/xhtml+xml");
     public static final ContentType APPLICATION_X_WWW_FORM_URLENCODED = new ContentType("application/x-www-form-urlencoded");
+
+    /**
+     * The GIF image content type.
+     */
     public static final ContentType IMAGE_GIF = new ContentType("image/gif");
+
+    /**
+     * The JPEG image content type.
+     */
     public static final ContentType IMAGE_JPEG = new ContentType("image/jpeg");
+
+    /**
+     * The PNG image content type.
+     */
     public static final ContentType IMAGE_PNG = new ContentType("image/png");
+
+    /**
+     * The BMP image content type.
+     */
     public static final ContentType IMAGE_SVG_XML = new ContentType("image/svg+xml");
+
+    /**
+     * The TIFF image content type.
+     */
     public static final ContentType IMAGE_TIFF = new ContentType("image/tiff");
+
+    /**
+     * The WebP image content type.
+     */
     public static final ContentType IMAGE_WEBP = new ContentType("image/webp");
 
     /**
@@ -41,6 +65,10 @@ public class ContentType {
     @Getter @NotNull
     private final String type;
 
+    /**
+     * Construct a new content type with the given type.
+     * @param type The type of the content.
+     */
     public ContentType(@NotNull final String type) {
         this.type = type;
     }

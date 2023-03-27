@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -40,6 +38,11 @@ public class RouteConfig {
      $      Public methods
      */
 
+    /**
+     * Get the request params with the position in the path
+     * of the request.
+     * @return The request params.
+     */
     public @NotNull Map<String, Integer> getRequestParam() {
         final Map<String, Integer> params = new HashMap<>();
         final String[] split = path.split("/");

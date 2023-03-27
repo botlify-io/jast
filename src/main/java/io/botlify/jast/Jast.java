@@ -3,6 +3,7 @@ package io.botlify.jast;
 import com.sun.net.httpserver.HttpServer;
 import io.botlify.jast.config.JastConfig;
 import io.botlify.jast.tools.SetupRoutesTool;
+import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,6 +18,7 @@ import java.util.function.Consumer;
  * all the route for this server.
  */
 @Log4j2
+@ToString(callSuper = true)
 public final class Jast extends Router {
 
     private final JastConfig jastConfig;
@@ -24,6 +26,7 @@ public final class Jast extends Router {
     /**
      * The HTTP server of the application.
      */
+    @ToString.Exclude
     @Nullable
     private HttpServer server;
 
