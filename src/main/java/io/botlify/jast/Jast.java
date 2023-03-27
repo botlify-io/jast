@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * This class is used to create a HTTP Server and initialize
+ * all the route for this server.
+ */
 public final class Jast {
 
     /**
@@ -72,6 +76,15 @@ public final class Jast {
         this.server.start();
         if (callback != null)
             callback.accept(null);
+    }
+
+    // Close
+
+    public void close() {
+        if (server == null)
+            throw new IllegalStateException("The Jast server is not started !");
+        server.stop(1000);
+        server = null;
     }
 
     // Global middlewares

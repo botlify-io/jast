@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,8 +26,12 @@ public class Request {
     @Getter
     private final byte[] rawBody;
 
+    @NotNull
+    private final Map<String, Object> attributes;
+
     public Request(@NotNull final RouteConfig routeConfig,
                    @NotNull final HttpExchange exchange) throws IOException {
+        this.attributes = new HashMap<>();
         this.routeConfig = routeConfig;
         this.exchange = exchange;
         if (getMethod().hasRequestBody()) {
@@ -105,9 +110,7 @@ public class Request {
         return (exchange.getRemoteAddress().getAddress().getHostAddress());
     }
 
-    /*
-     $      Query parameters
-     */
+    // Query parameters
 
     public @NotNull List<QueryParam> getQueryParams() {
         final List<QueryParam> result = new ArrayList<>();
@@ -156,5 +159,22 @@ public class Request {
     /*
      $      Cookies
      */
+
+    // Attributes
+
+    public void setAttribute(@NotNull final String name,
+                             @NotNull final Object value) {
+        this.attributes.put(name, value);
+    }
+
+    public boolean hasAttribute(@NotNull final String name) {
+        return (this.attributes.containsKey(name));
+    }
+
+    public @Nullable Object getAttribute(@NotNull final String name) {
+        if (!hasAttribute(name))
+            return (null);
+        return (this.attributes.get(name));
+    }
 
 }

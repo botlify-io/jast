@@ -51,6 +51,33 @@ public class JastRouteTest {
         }
     }
 
+    @Test
+    void testComplexParamRoute() throws IOException {
+        for (HttpMethod httpMethod : HttpMethod.values()) {
+            // Random port between 1024 and 65535.
+            final int port = (int) (Math.random() * (65535 - 1024)) + 1024;
+            // Random param to avoid cache.
+            final String randomParamOne = String.valueOf(Math.random());
+            final String randomParamTwo = String.valueOf(Math.random());
+
+            final Jast jast = new Jast();
+            jast.insertRoute(httpMethod, "/test/:paramOne/test/:paramTwo", (request, response) -> {
+                final String paramOne = request.getRequestParam("paramOne");
+                final String paramTwo = request.getRequestParam("paramTwo");
+                assertEquals(randomParamOne, paramOne);
+                assertEquals(randomParamTwo, paramTwo);
+                response.sendText("Hello World!");
+            });
+            jast.listen(port, "0.0.0.0");
+            final String requestBody = (httpMethod.hasRequestBody()) ? "Hello World!" : null;
+
+            final String finalUrl = "http://localhost:" + port + "/test/" + randomParamOne
+                    + "/test/" + randomParamTwo;
+
+            assertRequest(httpMethod, finalUrl, 200, requestBody, "Hello World!");
+        }
+    }
+
     void assertRequest(@NotNull final HttpMethod httpMethod,
                        @NotNull final String url,
                        final int code,
