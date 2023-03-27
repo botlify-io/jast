@@ -11,6 +11,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The router class to define the routes
+ * for a specific path for the server.
+ */
 @EqualsAndHashCode
 @ToString
 public class Router {

@@ -4,6 +4,10 @@ import io.botlify.jast.objects.Request;
 import io.botlify.jast.objects.Response;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This interface represents a route.
+ * Define your route by implementing this interface.
+ */
 public interface Route {
 
     /**

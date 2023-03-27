@@ -6,7 +6,8 @@ import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This class represents a content type in a HTTP request.
+ * This class represents a content type in an HTTP request.
+ * It is used to define the type of the content of the request.
  */
 @EqualsAndHashCode
 @ToString

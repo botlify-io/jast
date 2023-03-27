@@ -70,6 +70,13 @@ public class Request {
         return (new JSONObject(getBody()));
     }
 
+    public @Nullable ContentType getContentType() {
+        final Header header = getFirstHeader("Content-Type");
+        if (header == null)
+            return (null);
+        return (new ContentType(header.getValue()));
+    }
+
     /**
      * Get the list of all the headers of the request.
      * @return The list of all the headers of the request.

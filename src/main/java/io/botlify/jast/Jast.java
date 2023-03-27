@@ -2,6 +2,8 @@ package io.botlify.jast;
 
 import com.sun.net.httpserver.HttpServer;
 import io.botlify.jast.config.JastConfig;
+import io.botlify.jast.enums.HttpMethod;
+import io.botlify.jast.interfaces.Route;
 import io.botlify.jast.tools.SetupRoutesTool;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
