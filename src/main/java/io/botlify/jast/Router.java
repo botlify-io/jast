@@ -22,6 +22,12 @@ public class Router {
         this.routesConfig = new ArrayList<>();
     }
 
+    /**
+     * Define the sub router to use with the path.
+     * @param path The path to use.
+     * @param router The router to use.
+     * @throws IllegalArgumentException If the router is the same as the current router.
+     */
     public void use(@NotNull final String path,
                     @NotNull final Router router) {
         if (router == this)
@@ -36,6 +42,11 @@ public class Router {
 
     // GET
 
+    /**
+     * Insert a route in the router with the path for the GET method.
+     * @param path The path to use.
+     * @param routes The routes to use.
+     */
     public void get(@NotNull final String path,
                     @NotNull final Route... routes) {
         if (routes.length == 0)
@@ -45,6 +56,11 @@ public class Router {
 
     // POST
 
+    /**
+     * Insert a route in the router with the path for the POST method.
+     * @param path The path to use.
+     * @param routes The routes to use.
+     */
     public void post(@NotNull final String path,
                      @NotNull final Route... routes) {
         if (routes.length == 0)
@@ -55,6 +71,11 @@ public class Router {
 
     // PUT
 
+    /**
+     * Insert a route in the router with the path for the PUT method.
+     * @param path The path to use.
+     * @param routes The routes to use.
+     */
     public void put(@NotNull final String path,
                     @NotNull final Route... routes) {
         if (routes.length == 0)
@@ -64,6 +85,11 @@ public class Router {
 
     // DELETE
 
+    /**
+     * Insert a route in the router with the path for the DELETE method.
+     * @param path The path to use.
+     * @param routes The routes to use.
+     */
     public void delete(@NotNull final String path,
                        @NotNull final Route... routes) {
         if (routes.length == 0)
@@ -73,6 +99,11 @@ public class Router {
 
     // PATCH
 
+    /**
+     * Insert a route in the router with the path for the PATCH method.
+     * @param path The path to use.
+     * @param routes The routes to use.
+     */
     public void patch(@NotNull final String path,
                       @NotNull final Route... routes) {
         if (routes.length == 0)
@@ -82,6 +113,11 @@ public class Router {
 
     // HEAD
 
+    /**
+     * Insert a route in the router with the path for the HEAD method.
+     * @param path The path to use.
+     * @param routes The routes to use.
+     */
     public void head(@NotNull final String path,
                      @NotNull final Route... routes) {
         if (routes.length == 0)
@@ -91,6 +127,11 @@ public class Router {
 
     // OPTIONS
 
+    /**
+     * Insert a route in the router with the path for the OPTIONS method.
+     * @param path The path to use.
+     * @param routes The routes to use.
+     */
     public void options(@NotNull final String path,
                         @NotNull final Route... routes) {
         if (routes.length == 0)
@@ -100,6 +141,11 @@ public class Router {
 
     // TRACE
 
+    /**
+     * Insert a route in the router with the path for the TRACE method.
+     * @param path The path to use.
+     * @param routes The routes to use.
+     */
     public void trace(@NotNull final String path,
                       @NotNull final Route... routes) {
         if (routes.length == 0)
@@ -109,6 +155,11 @@ public class Router {
 
     // CONNECT
 
+    /**
+     * Insert a route in the router with the path for the CONNECT method.
+     * @param path The path to use.
+     * @param routes The routes to use.
+     */
     public void connect(@NotNull final String path,
                         @NotNull final Route... routes) {
         if (routes.length == 0)
@@ -144,8 +195,10 @@ public class Router {
                      @NotNull final String path,
                      @NotNull final Route route) {
         final RouteConfig routeConfig = new RouteConfig(method, path, route);
-        if (routesConfig.contains(routeConfig))
-            throw (new IllegalArgumentException("Route (" + method + ") with path \"" + path + "\" was already defined"));
+        if (routesConfig.contains(routeConfig)) {
+            throw (new IllegalArgumentException("Route (" + method + ") with path \""
+                    + path + "\" was already defined"));
+        }
         routesConfig.add(routeConfig);
     }
 
