@@ -101,6 +101,7 @@ public class JastRouteTest {
             if (httpMethod.hasResponseBody())
                 assertEquals(bodyExcepted, response.body().string());
         }
+
     }
 
 }

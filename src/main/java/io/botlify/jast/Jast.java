@@ -13,6 +13,8 @@ import org.jetbrains.annotations.Range;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.function.Consumer;
 
 /**
@@ -60,6 +62,7 @@ public final class Jast extends Router {
         if (server != null)
             throw (new IllegalStateException("Server is already running"));
         this.server = HttpServer.create(new InetSocketAddress(host, port), 0);
+        this.server.setExecutor(Executors.newCachedThreadPool());
 
         // Setup routes
         final SetupRoutesTool setupRoutesTool = new SetupRoutesTool(this.server, this.getRoutesConfig(),
